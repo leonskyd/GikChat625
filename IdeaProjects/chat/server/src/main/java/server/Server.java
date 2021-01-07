@@ -16,9 +16,10 @@ public class Server {
     List<ClientHandler> clients;
     private AuthService authService;
 
-    public Server() {
+    public Server() throws SQLException, ClassNotFoundException  {
         clients = new Vector<>();
-        authService = new SimpleAuthService();
+        //authService = new SimpleAuthService();
+        authService = new DataBaseAuthService();
 
         try {
             server = new ServerSocket(PORT);
