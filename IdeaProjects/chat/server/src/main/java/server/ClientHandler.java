@@ -21,8 +21,9 @@ public class ClientHandler {
             this.socket = socket;
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
+            ExecutorService service = Executors.newCachedThreadPool();
 
-            new Thread(()-> {
+            service.execute(()-> {
                     try {
                         // цикл аутентификации
                         while (true){
@@ -95,11 +96,12 @@ public class ClientHandler {
                         server.unsubscribe(this);
                         try {
                             socket.close();
+                            service.shutdown();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-            }).start();
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
